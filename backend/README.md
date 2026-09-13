@@ -6,31 +6,20 @@ Minimal FastAPI application for Studio Scheduler.
 
 - Python 3.12 or newer
 - PowerShell on Windows, or Bash on macOS/Linux
+- Docker Desktop with Docker Compose
 
-## Automated startup
+## Start local backend
 
-The startup scripts create the virtual environment if needed, install the
-backend dependencies, create `.env` from `.env.example` if needed, and start
-the development server with reload enabled.
+The startup scripts start PostgreSQL, create the virtual environment if
+needed, install dependencies, create `.env` from `.env.example` if needed, and
+start FastAPI with reload enabled.
 
-From the repository root, use the script for your shell:
+From the repository root, run one command for your shell:
 
 ### Windows PowerShell
 
 ```powershell
 ./backend/start.ps1
-```
-
-If PowerShell blocks local scripts, allow scripts for your user account once:
-
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-Alternatively, run the script without changing the execution policy:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File ./backend/start.ps1
 ```
 
 ### Bash
@@ -40,6 +29,14 @@ bash ./backend/start.sh
 ```
 
 You can also run either script from inside `backend/`.
+
+The API is available at <http://127.0.0.1:8000>, with the health check at
+<http://127.0.0.1:8000/health> and interactive docs at
+<http://127.0.0.1:8000/docs>.
+
+When PostgreSQL is ready, `/health` returns HTTP 200 with
+`{"status":"ok","database":"ok"}`. If the database is unavailable, it
+returns HTTP 503.
 
 ## Manual setup
 
@@ -70,9 +67,6 @@ Start the development server from `backend/`:
 uvicorn app.main:app --reload
 ```
 
-The health check is available at <http://127.0.0.1:8000/health>, and the
-interactive API docs are available at <http://127.0.0.1:8000/docs>.
-
 ## Stop the backend
 
 If the development server is running in the current terminal, press `Ctrl+C`
@@ -88,6 +82,22 @@ deactivate
 The `deactivate` command works in both PowerShell and Bash. You can close the
 terminal after deactivating; the `.venv` directory remains available for the
 next startup.
+
+To stop PostgreSQL without deleting its data, run this from the repository
+root:
+
+```text
+docker compose stop postgres
+```
+
+To remove the container while keeping the named `postgres_data` volume:
+
+```text
+docker compose down
+```
+
+Do not use `docker compose down -v` unless you intentionally want to delete
+the local database data.
 
 ## Tests
 

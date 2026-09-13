@@ -99,6 +99,12 @@ docker compose down
 Do not use `docker compose down -v` unless you intentionally want to delete
 the local database data.
 
+Docker Desktop's WSL2 virtual machine can be fully shut down with:
+
+```text
+wsl --shutdown
+```
+
 ## Tests
 
 Run the focused health-check test from `backend/`:

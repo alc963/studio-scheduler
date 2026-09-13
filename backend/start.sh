@@ -3,6 +3,9 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+echo "Starting PostgreSQL container..."
+docker compose -f ../docker-compose.yml up -d postgres
+
 if command -v python3 >/dev/null 2>&1; then
     python_command=python3
 else

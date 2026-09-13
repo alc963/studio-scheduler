@@ -2,6 +2,9 @@ $ErrorActionPreference = "Stop"
 
 Set-Location $PSScriptRoot
 
+Write-Host "Starting PostgreSQL container..."
+docker compose -f (Join-Path $PSScriptRoot "../docker-compose.yml") up -d postgres
+
 if (-not (Test-Path ".venv")) {
     Write-Host "Creating virtual environment..."
     python -m venv .venv

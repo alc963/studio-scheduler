@@ -14,6 +14,9 @@ $venvPython = Join-Path $PSScriptRoot ".venv/Scripts/python.exe"
 
 Write-Host "Installing backend dependencies..."
 & $venvPython -m pip install -r requirements.txt
+if ($LASTEXITCODE -ne 0) {
+    throw "Dependency installation failed. FastAPI was not started."
+}
 
 if (-not (Test-Path ".env")) {
     Write-Host "Creating .env from .env.example..."

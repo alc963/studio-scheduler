@@ -67,6 +67,18 @@ Start the development server from `backend/`:
 uvicorn app.main:app --reload
 ```
 
+## Database migrations
+
+Run these commands from `backend/` after changing SQLAlchemy models:
+
+```text
+alembic revision --autogenerate -m "message"
+alembic upgrade head
+```
+
+The first command creates a migration file from model changes. The second
+applies pending migrations to PostgreSQL.
+
 ## Stop the backend
 
 If the development server is running in the current terminal, press `Ctrl+C`
